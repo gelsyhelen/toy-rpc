@@ -2,10 +2,10 @@ CC := gcc
 
 PACKAGES := \
 	drmollineda.so \
-	jsmith.so
+	gelsyhelen.so
 
 %.so: proc_%.c
-	$(CC) -shared -fpic -o $@ $^
+	$(CC) -shared -fpic -o $@ $^ -lm
 
 all: ${PACKAGES}
 
