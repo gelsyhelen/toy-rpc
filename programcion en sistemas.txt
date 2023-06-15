@@ -1,0 +1,63 @@
+GELSY HELEN CADALSO RAMIREZ
+
+ejercicio 7.1
+
+Symbol    .symtab entry?     Symbol type      Module where defined     Section 
+buf        Yes                extern          m.o                       .data
+bufp0      Yes                global          swap.o                    .data
+bufp1      Yes                global          swap.o                   COMMON
+swap       Yes                global          swap.o                    .text
+temp       No                 __              __                         __
+
+
+
+ejercicio 7.2 
+A) a) REF(main.1) ---> DEF(main.1)
+   b) REF(main.2) ---> DEF(main.2)
+B) Esto es un error, porque cada módulo define un símbolo fuerte principal (regla 1).
+
+C)  a) REF(x.1)---> DEF(x.2)
+    b) REF(x.2)---> DEF(x.2)  
+
+
+ejercico 7.3
+ A. linux> gcc p.o libx.a
+ B. linux> gcc p.o linx.a liby.a
+ C. linux> gcc p.o libx.a liby.a libx.a
+
+
+ejercicio 5.4
+    A. En el código menos optimizado, el registro %xmm0 simplemente se usa como usado en cada iteración del ciclo. En el código más 
+       optimizado, se usa más a la manera de la variable acc en combine4, acumulando el productode los elementos del vector. La diferencia
+       con combine4, sin embargo, es que la ubicación destino se actualiza en cada iteración por la segunda instrucción vmovsd.
+ 
+   
+     void combine3w(vec_ptr v, data_t *dest){
+     long i;
+     long length = vec_length(v);
+     data_t *data = get_vec_start(v);
+     data_t acc = IDENT;
+    
+    
+     *dest = acc;
+    
+     for (i = 0; i < length; i++) {
+     acc = acc OP data[i];
+     *dest = acc;
+     }
+     }
+
+   B. Las dos versiones de combine3 tendrán una funcionalidad idéntica, incluso con alias de memoria.
+
+   C. Esta transformación se puede realizar sin cambiar el comportamiento del programa, ya que con la excepción de la primera iteración, 
+      el valor leído de dest al comienzo de cada iteración será el mismo valor escrito en este registro al final de la iteración anterior. 
+      Por lo tanto, la instrucción de combinación puede simplemente usar el valor que ya está en %mm0 al cominezo del ciclo.
+
+
+ejercicio 5.5
+   A. La funcion realia 2n multiplicaciones y n sumas.
+   B. Podemos ver que el cálculo que limita el rendimiento aquí esel cálculo repetidode la expresión xpwr = x * xpwr. 
+      Esto requiere una multiplicación de coma flotante (5 ciclos de reloj), y el cálculo de una iteración no puede comenzar hasta 
+      que se haya completado el de la iteración anterior. La actualización del resultado solo requiere una adición de coma flotante
+      (3 ciclos de reloj) entre iteraciones sucesivas. 
+ 
